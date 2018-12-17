@@ -15,17 +15,19 @@
 <div id="DynamicContent"></div>
 
 <script>
-$(document).ready(function () {
+  
+  $(document).ready(function () {
 
-  $("#DynamicContent").ajaxLoadUrl("about.html", function (el, html) {
-    el.loadeData(html);
-  });
+    $("#DynamicContent").ajaxLoadUrl("about.html", function (el, html) {
+      el.loadeData(html);
+    });
 
-  $(".ajax").ajaxAnchor(function (el, html) {
-    el.loadeData(html);			
+    $(".ajax").ajaxAnchor(function (el, html) {
+      el.loadeData(html);			
+    });
+
   });
   
-});
 </script>  
 
 

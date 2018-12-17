@@ -1,6 +1,7 @@
 # jquery-ajax-loader
-Makes it easy to load html into elements and mimic a Vue or React like page transition
-
+- Makes it easy to fetch html via a url and inject it into an elements
+- The  "loadData" method is just a default animation, you can use your own way of injecting the data 
+- Easy to create Vue or React like page transitions
 
 
 ```html
@@ -14,16 +15,15 @@ Makes it easy to load html into elements and mimic a Vue or React like page tran
 <div id="DynamicContent"></div>
 
 <script>
-
 $(document).ready(function () {
 
-$("#DynamicContent").ajaxLoadUrl("about.html", function (el, html) {
-  el.loadeData(html);
-});
+  $("#DynamicContent").ajaxLoadUrl("about.html", function (el, html) {
+    el.loadeData(html);
+  });
 
-$(".ajax").ajaxAnchor(function (el, html) {
-  el.loadeData(html);			
-});
+  $(".ajax").ajaxAnchor(function (el, html) {
+    el.loadeData(html);			
+  });
 });
 </script>  
 

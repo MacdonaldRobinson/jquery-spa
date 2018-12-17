@@ -5,26 +5,27 @@ Makes it easy to load html into elements and mimic a Vue or React like page tran
 
 ```html
 
-<script src="/Scripts/jquery-ajax-loader.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="js/jquery-ajax-loader.js"></script>  
 
-<a href="/nominate/" class="ajax" data-ajax-target="#DynamicContent">Nominate</a>
-<a href="/nominate/thank-you/" class="ajax" data-ajax-target="#DynamicContent">Nominate - Thank You</a>	
+<a href="about.html" class="ajax" data-ajax-target="#DynamicContent">About</a>
+<a href="contact.html" class="ajax" data-ajax-target="#DynamicContent">Contact</a>	
 
 <div id="DynamicContent"></div>
 
 <script>
 
-	$(document).ready(function () {
+$(document).ready(function () {
 
-		$("#DynamicContent").ajaxLoadUrl("/nominate/", function (el, html) {
-			el.loadeData(html);
-		});
+$("#DynamicContent").ajaxLoadUrl("about.html", function (el, html) {
+  el.loadeData(html);
+});
 
-		$(".ajax").ajaxAnchor(function (el, html) {
-			el.loadeData(html);			
-		});
-	});
-</script>
+$(".ajax").ajaxAnchor(function (el, html) {
+  el.loadeData(html);			
+});
+});
+</script>  
 
 
 ```

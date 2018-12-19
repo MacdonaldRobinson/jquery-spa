@@ -40,7 +40,15 @@
 					var doc = $('<output>').append($.parseHTML(data, document, true));
 
 					document.title = doc.find("title").text();
-					window.history.pushState({ "html": data, "pageTitle": document.title }, "", href);
+					try {						
+							window.history.pushState({ "html": data, "pageTitle": document.title }, "", href);
+
+					} catch (error) {
+						console.group(error);
+
+						window.title = document.title;
+
+					}
 
 					bodyHtml = doc.html();
 					

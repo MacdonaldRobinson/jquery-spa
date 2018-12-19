@@ -23,11 +23,13 @@
       $(document).ready(function () {
     
         $("#DynamicContent").ajaxLoadUrl("about.html", function (el, html) {
-          el.loadeData(html);
+          el.html(html)
+          //el.loadeData(html);
         });
     
         $(".ajax").ajaxAnchor(function (el, html) {
-          el.loadeData(html);			
+          el.html(html)
+          //el.loadeData(html);			
         });
       });
     </script>  

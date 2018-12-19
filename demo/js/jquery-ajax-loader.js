@@ -1,4 +1,7 @@
+
 (function ($) {
+	
+	var cachedItems = {} ;
 
 	$.fn.loadeData = function (html) {
 
@@ -15,23 +18,42 @@
 
 		this.each(function (index, el) {
 
-			$.get(href, function (data) {
-				var bodyHtml = data;
+			if(cachedItems[href] != undefined)
+			{
+				console.log("loaded from cache");
 
-				var doc = $('<output>').append($.parseHTML(data, document, true));
-
-				document.title = doc.find("title").text();
-				window.history.pushState({ "html": data, "pageTitle": document.title }, "", href);
-
-				bodyHtml = doc.html();
+				var bodyHtml = cachedItems[href];
 
 				if (callBackFunction != undefined && callBackFunction != "" && callBackFunction != null) {
 					callBackFunction($(el), bodyHtml);
 				}
 				else {
 					$(el).loadeData(bodyHtml);
-				}
-			});
+				}				
+				
+			}	
+			else
+			{						
+				$.get(href, function (data) {
+					var bodyHtml = data;
+
+					var doc = $('<output>').append($.parseHTML(data, document, true));
+
+					document.title = doc.find("title").text();
+					window.history.pushState({ "html": data, "pageTitle": document.title }, "", href);
+
+					bodyHtml = doc.html();
+					
+					cachedItems[href] = bodyHtml;
+
+					if (callBackFunction != undefined && callBackFunction != "" && callBackFunction != null) {
+						callBackFunction($(el), bodyHtml);
+					}
+					else {
+						$(el).loadeData(bodyHtml);
+					}
+				});
+			}
 
 		});
 

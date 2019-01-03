@@ -1,35 +1,38 @@
 # jquery-ajax-loader
 - Makes it easy to fetch html via a url and inject it into an element.
-- Also provides and easy way to make any link into an ajax loader.
 - The  "loadData" method is just a default animation, you can use your own way of injecting the data.
 - Easy to create Vue or React like page transitions.
 
 
 ```html
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="js/jquery-ajax-loader.js"></script>  
+    <a href="about.html" class="ajax">About</a>
+    <a href="contact.html" class="ajax">Contact</a>	
+    
+    <div id="DynamicContent"></div>
+    
+    <script>
+        
+      $(document).ready(function () {
+    
+        if (window.location.hash != "") {
+          var url = window.location.hash.replace("#", "");
+          ajaxLoadUrl(url, "#DynamicContent");
+        }
+        else {
+          ajaxLoadUrl("about.html", "#DynamicContent");
+        }
+    
+        $(document).on("click", "a", function (event) {
 
-<a href="about.html" class="ajax" data-ajax-target="#DynamicContent">About</a>
-<a href="contact.html" class="ajax" data-ajax-target="#DynamicContent">Contact</a>	
+          event.preventDefault();
 
-<div id="DynamicContent"></div>
-
-<script>
-  
-  $(document).ready(function () {
-
-    $("#DynamicContent").ajaxLoadUrl("about.html", function (el, html) {
-      el.loadeData(html);
-    });
-
-    $(".ajax").ajaxAnchor(function (el, html) {
-      el.loadeData(html);			
-    });
-
-  });
-  
-</script>  
+          var href = $(this).attr("href");
+       
+          ajaxLoadUrl(href, "#DynamicContent");
+        })
+      });
+    </script>  
 
 
 ```

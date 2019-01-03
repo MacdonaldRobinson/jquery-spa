@@ -29,19 +29,22 @@
           ajaxLoadUrl(url, "#DynamicContent");
         }
         else {
-          ajaxLoadUrl("about.html", "#DynamicContent");
+          ajaxLoadUrl("/home/", "#DynamicContent");
         }
     
         $(document).on("click", "a", function (event) {
-
-          event.preventDefault();
-
           var href = $(this).attr("href");
-       
-          ajaxLoadUrl(href, "#DynamicContent");
+          var char = href.charAt(0);
+    
+          if (char == "/") {
+            event.preventDefault();
+    
+            ajaxLoadUrl(href, "#DynamicContent");
+          }
         })
       });
     </script>  
+    
     
   
 </body>

@@ -8,31 +8,34 @@
 
     <a href="about.html" class="ajax">About</a>
     <a href="contact.html" class="ajax">Contact</a>	
-    
+
     <div id="DynamicContent"></div>
-    
+        
     <script>
         
       $(document).ready(function () {
-    
+
         if (window.location.hash != "") {
           var url = window.location.hash.replace("#", "");
           ajaxLoadUrl(url, "#DynamicContent");
         }
         else {
-          ajaxLoadUrl("about.html", "#DynamicContent");
+          ajaxLoadUrl("/home/", "#DynamicContent");
         }
-    
+
         $(document).on("click", "a", function (event) {
-
-          event.preventDefault();
-
           var href = $(this).attr("href");
-       
-          ajaxLoadUrl(href, "#DynamicContent");
+          var char = href.charAt(0);
+
+          if (char == "/") {
+            event.preventDefault();
+
+            ajaxLoadUrl(href, "#DynamicContent");
+          }
         })
       });
     </script>  
+
 
 
 ```

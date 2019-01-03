@@ -3,26 +3,31 @@ var cachedItems = {};
 function loadeData(selector, html) {
 
 	$(selector).each(function (index, el) {
-		$(el).toggle("slide", {direction: "right"}, 700, function () {
+		$(el).toggle("fade", {direction: "right"}, 700, function () {
 			$(el).html(html);
-			$(el).toggle("slide", {direction: "right"}, 700);
+			//$(el).css("height", "100%");
+			$(el).toggle("fade", {direction: "right"}, 700);
+			$("body").scrollTop(0);
 		});
 	});		
 }
 
 var lastTargetElement = null;
 window.onpopstate = function (event) {
-	if (event.state != null) {
+	if (event.state != null) {		
 		loadeData(lastTargetElement, event.state.html);
+		updateTitle(event.state.href, event.state.html);
 	}
 };
 
-function updateTitleAndHistory(href, bodyHtml) {
+function updateTitle(href, bodyHtml) {
 	var doc = $('<output>').append($.parseHTML(bodyHtml, document, true));
 	document.title = doc.find("title").text();
+}
 
+function pushHistory(href, bodyHtml) {
 	try {
-		window.history.pushState({ href: href, html: bodyHtml}, document.title, href);
+		window.history.pushState({ href: href, html: bodyHtml }, document.title, href);
 
 	} catch (error) {
 		window.title = document.title;
@@ -38,7 +43,8 @@ function ajaxLoadUrl(href, targetElement, callBackFunction) {
 	{
 		var bodyHtml = cachedItems[href];
 
-		updateTitleAndHistory(href, bodyHtml);
+		updateTitle(href, bodyHtml);
+		pushHistory(href, bodyHtml);
 
 		if (callBackFunction != undefined && callBackFunction != "" && callBackFunction != null) {
 			callBackFunction($(el), bodyHtml);
@@ -52,7 +58,8 @@ function ajaxLoadUrl(href, targetElement, callBackFunction) {
 		$.get(href, function (data) {
 			var bodyHtml = data;				
 
-			updateTitleAndHistory(href, bodyHtml);			
+			updateTitle(href, bodyHtml);
+			pushHistory(href, bodyHtml);
 					
 			cachedItems[href] = bodyHtml;				
 

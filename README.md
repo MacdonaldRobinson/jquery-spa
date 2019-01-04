@@ -6,35 +6,41 @@
 
 ```html
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+    <script src="js/jquery-ajax-loader.js"></script>  
+
     <a href="about.html" class="ajax">About</a>
     <a href="contact.html" class="ajax">Contact</a>	
-
+    
     <div id="DynamicContent"></div>
-        
+    
     <script>
-        
-      $(document).ready(function () {
 
+      $(document).ready(function () {
+    
         if (window.location.hash != "") {
           var url = window.location.hash.replace("#", "");
           ajaxLoadUrl(url, "#DynamicContent");
         }
         else {
-          ajaxLoadUrl("/home/", "#DynamicContent");
+          ajaxLoadUrl("about.html", "#DynamicContent");
         }
-
+    
         $(document).on("click", "a", function (event) {
-          var href = $(this).attr("href");
-          var char = href.charAt(0);
-
-          if (char == "/") {
+          var href = $(this).attr("href");			
+    
+              
+          if (href.indexOf("javascript") == -1) {
+    
             event.preventDefault();
-
+    
             ajaxLoadUrl(href, "#DynamicContent");
           }
         })
       });
-    </script>  
+    </script>
 
 
 

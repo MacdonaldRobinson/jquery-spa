@@ -21,7 +21,7 @@
     <div id="DynamicContent"></div>
     
     <script>
-        
+
       $(document).ready(function () {
     
         if (window.location.hash != "") {
@@ -29,21 +29,22 @@
           ajaxLoadUrl(url, "#DynamicContent");
         }
         else {
-          ajaxLoadUrl("/home/", "#DynamicContent");
+          ajaxLoadUrl("about.html", "#DynamicContent");
         }
     
         $(document).on("click", "a", function (event) {
-          var href = $(this).attr("href");
-          var char = href.charAt(0);
+          var href = $(this).attr("href");			
     
-          if (char == "/") {
+              
+          if (href.indexOf("javascript") == -1) {
+    
             event.preventDefault();
     
             ajaxLoadUrl(href, "#DynamicContent");
           }
         })
       });
-    </script>  
+    </script>
     
     
   

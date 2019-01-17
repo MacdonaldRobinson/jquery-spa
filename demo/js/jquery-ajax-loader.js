@@ -1,5 +1,5 @@
 function loadeData(selector, html) {
-
+	
 	$(selector).each(function (index, el) {
 		$(el).html(html);
 		/*$(el).toggle("fade", { direction: "right" }, 700, function () {
@@ -31,6 +31,16 @@ var lastTargetElement = null;
 function updateTitle(href, bodyHtml) {
 	var doc = $('<output>').append($.parseHTML(bodyHtml, document, true));
 	document.title = doc.find("title").text();
+
+	doc.find("meta").each(function (index, el) {
+		
+		var name = $(el).attr("name");
+		var content = $(el).attr("content");
+
+		$("meta[name='" + name + "']").attr("content", content);
+
+	});
+
 }
 
 function pushHistory(href, bodyHtml) {
@@ -55,7 +65,16 @@ function _loadData(href, el, bodyHtml, callBackFunction) {
 	}
 }
 
-function ajaxLoadUrl(href, targetElement, callBackFunction) {
+var isLoading = false;
+
+function ajaxLoadUrl(href, targetElement, callBackFunction) {	
+
+	href = href.split("?")[0];
+
+	if ((isLoading) || (href == window.location.pathname || href == window.location.href || "/"+href == window.location.pathname))
+		return;
+
+	isLoading = true;
 	lastTargetElement = targetElement;
 
 	var el = targetElement;
@@ -64,5 +83,7 @@ function ajaxLoadUrl(href, targetElement, callBackFunction) {
 		var bodyHtml = data;
 
 		_loadData(href, el, bodyHtml, callBackFunction);
+
+		isLoading = false;
 	});	
 }

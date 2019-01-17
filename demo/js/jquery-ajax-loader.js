@@ -69,9 +69,9 @@ var isLoading = false;
 
 function ajaxLoadUrl(href, targetElement, callBackFunction) {	
 
-	href = href.split("?")[0];
+	var urlSegment = href.split("?")[0];
 
-	if ((isLoading) || (href == window.location.pathname || href == window.location.href || "/"+href == window.location.pathname))
+	if ((isLoading) || (urlSegment == window.location.pathname || urlSegment == window.location.href || "/"+urlSegment == window.location.pathname))
 		return;
 
 	isLoading = true;

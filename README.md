@@ -1,6 +1,11 @@
 # jquery-ajax-loader
 - Makes it easy to fetch html via a url and inject it into an element.
-- The  "loadData" method is just a default animation, you can use your own way of injecting the data.
+- Automaticly takes over anchor click events and makes anchor clicks load data via AJAX
+- The "ajaxLoadUrl" function has a third param which is a callback function, which you can use to override the default load behaviour and animation
+    ```html 
+    ajaxLoadUrl(event.state.href, lastTargetElement, function (el, bodyHtml) {
+      event.state.html = bodyHtml;
+    });    
 - Easy to create Vue or React like page transitions.
 - Since data is simply loaded using AJAX you are inherently using SSR ( Server Side Rendering )
 

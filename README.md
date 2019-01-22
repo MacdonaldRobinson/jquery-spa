@@ -7,41 +7,48 @@
 
 ```html
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.min.js"></script>
 
-    <script src="js/jquery-ajax-loader.js"></script>  
+  <script src="js/jquery-ajax-loader.js"></script>
 
-    <a href="about.html" class="ajax">About</a>
-    <a href="contact.html" class="ajax">Contact</a>	
-    
-    <div id="DynamicContent"></div>
-    
-    <script>
+  <a href="about.html" class="ajax">About</a>
+  <a href="contact.html" class="ajax">Contact</a>
 
-      $(document).ready(function () {
-    
-        if (window.location.hash != "") {
-          var url = window.location.hash.replace("#", "");
-          ajaxLoadUrl(url, "#DynamicContent");
-        }
-        else {
-          ajaxLoadUrl("about.html", "#DynamicContent");
-        }
-    
-        $(document).on("click", "a", function (event) {
-          var href = $(this).attr("href");			
-    
-              
-          if (href.indexOf("javascript") == -1) {
-    
-            event.preventDefault();
-    
-            ajaxLoadUrl(href, "#DynamicContent");
-          }
-        })
-      });
-    </script>
+  <div id="DynamicContent"></div>
+
+  <script>
+
+    $(document).ready(function () {
+
+      if (window.location.hash != "") {
+        var url = window.location.hash.replace("#", "");
+        ajaxLoadUrl(url, "#DynamicContent");
+      }
+      else {
+        ajaxLoadUrl("about.html", "#DynamicContent");
+      }
+    });
+
+    // Below is not required but is good to show a message while waiting for the ajax call to finish
+    // Below depends on Jquery Block UI to work
+    var timer = null;
+
+    $(document).ajaxStart(function () {
+      timer = setTimeout(function () {
+        $.blockUI({ message: 'Just a moment...' });
+      }, 1000);
+    });
+
+    $(document).ajaxStop(function () {
+      $.unblockUI();
+      if (timer != null) {
+        clearTimeout(timer);
+      }
+    });
+
+  </script>
 
 
 

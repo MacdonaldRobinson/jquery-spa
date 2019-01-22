@@ -4,8 +4,8 @@
 - The "ajaxLoadUrl" function has a third param which is a callback function, which you can use to override the default load behaviour and animation
 
     ```html 
-    ajaxLoadUrl(event.state.href, lastTargetElement, function (el, bodyHtml) {
-      event.state.html = bodyHtml;
+    ajaxLoadUrl(href, targetElement, function (el, bodyHtml) {
+      $(el).html(bodyHtml);
     });    
     ```
 

@@ -22,8 +22,8 @@
 
   <script src="js/jquery-ajax-loader.js"></script>
 
-  <a href="about.html" class="ajax">About</a>
-  <a href="contact.html" class="ajax">Contact</a>
+  <a href="about.html">About</a>
+  <a href="contact.html">Contact</a>
 
   <div id="DynamicContent"></div>
 

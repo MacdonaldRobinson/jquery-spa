@@ -2,6 +2,7 @@
 - Makes it easy to fetch html via a url and inject it into an element.
 - The  "loadData" method is just a default animation, you can use your own way of injecting the data.
 - Easy to create Vue or React like page transitions.
+- Since data is simply loaded using AJAX you are inherently using SSR ( Server Side Rendering )
 
 
 ```html

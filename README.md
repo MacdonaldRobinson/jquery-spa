@@ -2,12 +2,16 @@
 - Makes it easy to fetch html via a url and inject it into an element.
 - Automaticly takes over anchor click events and makes anchor clicks load data via AJAX
 - The "ajaxLoadUrl" function has a third param which is a callback function, which you can use to override the default load behaviour and animation
+
     ```html 
     ajaxLoadUrl(event.state.href, lastTargetElement, function (el, bodyHtml) {
       event.state.html = bodyHtml;
     });    
-- Easy to create Vue or React like page transitions.
+    ```
+
+- Easy to create Vue or React like websites and page transitions.
 - Since data is simply loaded using AJAX you are inherently using SSR ( Server Side Rendering )
+- Uses the HTML5 History API internally so you can use the browsers back and forward buttons to navigate
 
 
 ```html

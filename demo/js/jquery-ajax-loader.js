@@ -1,3 +1,10 @@
+/*
+	Author: Macdonald Robinson
+	Project URL: https://github.com/MacdonaldRobinson/jquery-ajax-loader
+
+	Easily convert any standart website into a Single Page App with minimal effort
+*/
+
 function loadeData(selector, html) {
 
 	$(selector).each(function (index, el) {

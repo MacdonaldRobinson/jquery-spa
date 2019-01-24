@@ -72,13 +72,13 @@ function _loadData(href, el, bodyHtml, callBackFunction) {
 		callBackFunction($(el), bodyHtml);
 	}
 	else {
-
-		console.log("ran else", el);
 		updateTitle(href, bodyHtml);
 		pushHistory(href, bodyHtml);
 
 		loadeData($(el), bodyHtml);
 	}
+
+	window.scrollTo(0, 0);
 }
 
 var isLoading = false;

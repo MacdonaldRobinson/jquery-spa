@@ -1,10 +1,3 @@
-/*
-	Author: Macdonald Robinson
-	Project URL: https://github.com/MacdonaldRobinson/jquery-ajax-loader
-
-	Easily convert any standart website into a Single Page App with minimal effort
-*/
-
 function loadeData(selector, html) {
 
 	$(selector).each(function (index, el) {
@@ -32,14 +25,12 @@ $(document).ready(function () {
 		}
 	};
 
-
 	$(document).on("click", "a", function (event) {
 		var href = $(this).attr("href");
 		var target = $(this).attr("target");
 
 		if ((href != undefined && href != null && href != "" && target != "_blank" && href.toLowerCase().indexOf("@") == -1 && href.toLowerCase().indexOf("javascript") == -1 && $(this).parents(".field").length == 0 && $(this).parents("#AccessCMSPermissionsPanel").length == 0 && href.indexOf("javascript") == -1) || (href.charAt(0) == "/")) {
 			var segment = href.replace(window.location.host, "");
-
 			if (segment != "") {
 				event.preventDefault();
 
@@ -81,6 +72,8 @@ function _loadData(href, el, bodyHtml, callBackFunction) {
 		callBackFunction($(el), bodyHtml);
 	}
 	else {
+
+		console.log("ran else", el);
 		updateTitle(href, bodyHtml);
 		pushHistory(href, bodyHtml);
 
@@ -89,6 +82,7 @@ function _loadData(href, el, bodyHtml, callBackFunction) {
 }
 
 var isLoading = false;
+var cache = [];
 
 function ajaxLoadUrl(href, targetElement, callBackFunction) {
 
@@ -102,11 +96,18 @@ function ajaxLoadUrl(href, targetElement, callBackFunction) {
 
 	var el = targetElement;
 
-	$.get(href, function (data) {
-		var bodyHtml = data;
+	if (cache[href] != undefined) {
+		_loadData(href, el, cache[href], callBackFunction);
+	}
+	else {
+		$.get(href, function (data) {
+			var bodyHtml = data;
 
-		_loadData(href, el, bodyHtml, callBackFunction);
+			_loadData(href, el, bodyHtml, callBackFunction);
 
-		isLoading = false;
-	});
+			cache[href] = bodyHtml;
+		});
+	}
+
+	isLoading = false;
 }

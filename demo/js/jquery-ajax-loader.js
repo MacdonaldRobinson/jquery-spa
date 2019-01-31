@@ -35,6 +35,19 @@ $(document).ready(function () {
 				event.preventDefault();
 
 				ajaxLoadUrl(href, "#DynamicContent");
+
+				setTimeout(function () {
+
+					if (gtag != undefined) {
+
+						gtag('config', '[TRACKING_ID]', {
+							'page_title': document.title,
+							'page_path': document.location.pathname
+						});
+
+					}
+				}, 2000);
+
 			}
 		}
 	});

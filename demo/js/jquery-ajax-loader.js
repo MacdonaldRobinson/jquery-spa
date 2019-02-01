@@ -36,18 +36,6 @@ $(document).ready(function () {
 
 				ajaxLoadUrl(href, "#DynamicContent");
 
-				setTimeout(function () {
-
-					if (gtag != undefined) {
-
-						gtag('config', '[TRACKING_ID]', {
-							'page_title': document.title,
-							'page_path': document.location.pathname
-						});
-
-					}
-				}, 2000);
-
 			}
 		}
 	});
@@ -92,6 +80,31 @@ function _loadData(href, el, bodyHtml, callBackFunction) {
 	}
 
 	window.scrollTo(0, 0);
+
+	setTimeout(function () {
+
+		if (gtag != undefined) {
+
+			var trackingId = "";
+
+			ga.getAll().forEach((tracker) => {
+				trackingId = tracker.get("trackingId");
+			});
+
+			if (trackingId != "") {
+				gtag('config', trackingId, {
+					'page_title': document.title,
+					'page_path': document.location.pathname
+				});
+
+				console.log("pageview tracked - google analytics");
+
+			} else {
+				console.log("unable to track page using google analytics");
+			}
+		}
+	}, 1000);
+
 }
 
 var isLoading = false;

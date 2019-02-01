@@ -81,30 +81,54 @@ function _loadData(href, el, bodyHtml, callBackFunction) {
 
 	window.scrollTo(0, 0);
 
+	trackPageView();
+}
+
+function trackPageView() {
 	setTimeout(function () {
 
-		if (gtag != undefined) {
+		if (typeof ga == 'undefined') {
+			console.log("Google Analytics Not installed! No PageViews will be tracked!");
+			return;
+		}
 
-			var trackingId = "";
+		var trackingId = "";
 
-			ga.getAll().forEach((tracker) => {
-				trackingId = tracker.get("trackingId");
+		ga.getAll().forEach((tracker) => {
+			trackingId = tracker.get("trackingId");
+		});
+
+		if (trackingId == "") {
+			console.log("Error: Unable to get Google Analytics Tracking ID");
+			return;
+		}
+
+		console.log("Found Google Analytics Tracking ID ( " + trackingId + " )!");
+
+		if (typeof gtag != 'undefined') {
+
+			console.log("Found gtag");
+
+			gtag('config', trackingId, {
+				'page_title': document.title,
+				'page_path': document.location.pathname
 			});
 
-			if (trackingId != "") {
-				gtag('config', trackingId, {
-					'page_title': document.title,
-					'page_path': document.location.pathname
-				});
+			console.log("Sent PageView for - " + document.location.pathname);
 
-				console.log("pageview tracked - google analytics");
+		}
+		else if (typeof ga != 'undefined') {
+			console.log("No 'gtag' found, falling back to 'ga'");
 
-			} else {
-				console.log("unable to track page using google analytics");
-			}
+			ga('create', trackingId, 'auto');
+			ga('send', 'pageview', location.pathname);
+
+			console.log("Sent PageView for - " + document.location.pathname);
+		}
+		else {
+			console.log("Error tracking no ga or gtag were found, No PageViews will be tracked!");
 		}
 	}, 1000);
-
 }
 
 var isLoading = false;

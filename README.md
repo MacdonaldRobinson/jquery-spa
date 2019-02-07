@@ -16,6 +16,7 @@
 
 ```html
 
+  <!-- Requried Includes -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.min.js"></script>
@@ -37,23 +38,6 @@
       }
       else {
         ajaxLoadUrl("about.html", "#DynamicContent");
-      }
-    });
-
-    // Below is not required but is good to show a message while waiting for the ajax call to finish
-    // Below depends on Jquery Block UI to work
-    var timer = null;
-
-    $(document).ajaxStart(function () {
-      timer = setTimeout(function () {
-        $.blockUI({ message: 'Just a moment...' });
-      }, 1000);
-    });
-
-    $(document).ajaxStop(function () {
-      $.unblockUI();
-      if (timer != null) {
-        clearTimeout(timer);
       }
     });
 

@@ -6,7 +6,6 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Page Title</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
 
 </head>
 
@@ -33,23 +32,6 @@
       }
       else {
         ajaxLoadUrl("about.html", "#DynamicContent");
-      }
-    });
-
-    // Below is not required but is good to show a message while waiting for the ajax call to finish
-    // Below depends on Jquery Block UI to work
-    var timer = null;
-
-    $(document).ajaxStart(function () {
-      timer = setTimeout(function () {
-        $.blockUI({ message: 'Just a moment...' });
-      }, 1000);
-    });
-
-    $(document).ajaxStop(function () {
-      $.unblockUI();
-      if (timer != null) {
-        clearTimeout(timer);
       }
     });
 

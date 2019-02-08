@@ -38,18 +38,21 @@ $(document).ready(function () {
 			});*/
 		}
 	};
-
 	$(document).on("click", "a", function (event) {
 		var href = $(this).attr("href");
 		var target = $(this).attr("target");
 
+
 		if (target != "_blank" && $(this).parents(".field").length == 0 && $(this).parents("#AccessCMSPermissionsPanel").length == 0) {
-			var segment = href.replace(window.location.host, "");
+
+			var urlSegment = href.split("?")[0];
+			var segment = href.replace(window.location.origin, "");
+
 			if (segment != "") {
 
 				var loaded = ajaxLoadUrl(href, "#DynamicContent");
 
-				if (loaded) {
+				if (loaded || segment == window.location.pathname) {
 					event.preventDefault();
 				}
 			}

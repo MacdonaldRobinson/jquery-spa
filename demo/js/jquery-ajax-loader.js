@@ -144,7 +144,8 @@ function trackPageView() {
 			console.log("No 'gtag' found, falling back to 'ga'");
 
 			ga('create', trackingId, 'auto');
-			ga('send', 'pageview', location.pathname);
+			ga('set', 'page', location.pathname);
+			ga('send', 'pageview');
 
 			console.log("Sent PageView for - " + document.location.pathname);
 		}

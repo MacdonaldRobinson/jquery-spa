@@ -7,6 +7,8 @@
 - Automaticly sends "pageview" events to google analytics when you navigate between different pages of your site
 - Ability to preload pages
 
+NOTE: From the server side you need to redirect all traffic to the index page along with a hash of the path and query, so something like this: "/#/home?param1=test&param2=test2"
+
 ```html
 
   <!-- Required Includes -->

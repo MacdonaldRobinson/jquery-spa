@@ -7,43 +7,39 @@
 - Automaticly sends "pageview" events to google analytics when you navigate between different pages of your site
 - Ability to preload pages
 
-- The "ajaxLoadUrl" function has a third param which is a callback function, which you can use to override the default load behaviour and animation
-
-    ```html 
-    ajaxLoadUrl(href, targetElement, function (el, bodyHtml) {
-      $(el).html(bodyHtml);
-    });    
-    ```
-
-
 ```html
 
-  <!-- Requried Includes -->
+  <!-- Required Includes -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.min.js"></script>
-
+  
+  <!-- Load the library -->
   <script src="js/jquery-ajax-loader.js"></script>
 
+  <!-- Required: Initialize the ajax options -->
+  <script>
+    var ajaxOptions = {
+      homePagePath: "/home.html",
+      targetElement: "#DynamicContent",
+      animateIn: function (selector, html) {
+        $(selector).each(function (index, el) {
+          $(el).toggle("fade", 250, function () {
+            $(el).html(html);
+            $(el).toggle("fade", 400);
+          });
+        });
+      }
+    }
+
+    initAjaxOptions(ajaxOptions);
+  </script>
+
+  <a href="home.html">Home</a>
   <a href="about.html">About</a>
   <a href="contact.html">Contact</a>
 
   <div id="DynamicContent"></div>
-
-  <script>
-
-    $(document).ready(function () {
-
-      if (window.location.hash != "") {
-        var url = window.location.hash.replace("#", "");
-        ajaxLoadUrl(url, "#DynamicContent");
-      }
-      else {
-        ajaxLoadUrl("about.html", "#DynamicContent");
-      }
-    });
-
-  </script>
 
 
 

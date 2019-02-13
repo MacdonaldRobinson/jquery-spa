@@ -1,14 +1,24 @@
-function loadeData(selector, html) {
-	$(selector).each(function (index, el) {
-		//$(el).html(html);
-		$(el).toggle("fade", 250, function () {
-			$(el).html(html);
-			//$(el).css("height", "100%");
-			// $("#mainNav").effect("fade");
-			$(el).toggle("fade", 400);
-			//$("body").scrollTop(0);
+var ajaxOptions = {
+	homePagePath: "/home/",
+	targetElement: "#DynamicContent",
+	animateIn: function (selector, html) {
+		$(selector).each(function (index, el) {
+			$(el).toggle("fade", 250, function () {
+				$(el).html(html);
+				$(el).toggle("fade", 400);
+			});
 		});
-	});
+	}
+}
+
+function initAjaxOptions(options) {
+	ajaxOptions = options;
+}
+
+function loadeData(selector, html) {
+	$(".nav-link").parent().removeClass("current");
+	$(".searchList").val("");
+	ajaxOptions.animateIn(selector, html);
 }
 
 function preloadLinks() {
@@ -26,7 +36,16 @@ $(document).ready(function () {
 
 	//preloadLinks();
 
+	if (window.location.hash != "") {
+		var url = window.location.hash.replace("#", "");
+		ajaxLoadUrl(url, ajaxOptions.targetElement);
+	}
+	else {
+		ajaxLoadUrl(ajaxOptions.homePagePath + window.location.search, ajaxOptions.targetElement);
+	}
+
 	window.onpopstate = function (event) {
+
 
 		if (event.state != null) {
 
@@ -38,6 +57,7 @@ $(document).ready(function () {
 			});*/
 		}
 	};
+
 	$(document).on("click", "a", function (event) {
 		var href = $(this).attr("href");
 		var target = $(this).attr("target");
@@ -147,6 +167,8 @@ function trackPageView() {
 			ga('set', 'page', location.pathname);
 			ga('send', 'pageview');
 
+			//ga('send', 'pageview', location.pathname);
+
 			console.log("Sent PageView for - " + document.location.pathname);
 		}
 		else {
@@ -164,7 +186,7 @@ function block() {
 	console.log("Ran block");
 	timer = setTimeout(function () {
 		$.blockUI({
-			message: 'Please wait ...',
+			message: '<div class="lds-ring"><div></div><div></div><div></div><div></div></div>',
 			css: {
 				border: 'none',
 				background: 'none'

@@ -79,7 +79,9 @@ $(document).ready(function () {
 
 				var loaded = ajaxLoadUrl(href, "#DynamicContent");
 
-				if (loaded || segment == window.location.pathname) {
+				//console.log(loaded, href, segment, window.location.pathname);
+
+				if (loaded || segment == window.location.pathname || segment == href) {
 					event.preventDefault();
 				}
 			}

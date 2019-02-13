@@ -1,11 +1,16 @@
 var ajaxOptions = {
 	homePagePath: "/home/",
 	targetElement: "#DynamicContent",
+	preloadLinks: false,
 	animateIn: function (selector, html) {
 		$(selector).each(function (index, el) {
+			//$(el).html(html);
 			$(el).toggle("fade", 250, function () {
 				$(el).html(html);
+				//$(el).css("height", "100%");
+				// $("#mainNav").effect("fade");
 				$(el).toggle("fade", 400);
+				//$("body").scrollTop(0);
 			});
 		});
 	}
@@ -34,7 +39,9 @@ function preloadLinks() {
 
 $(document).ready(function () {
 
-	//preloadLinks();
+	if (ajaxOptions.preloadLinks) {
+		preloadLinks();
+	}
 
 	if (window.location.hash != "") {
 		var url = window.location.hash.replace("#", "");

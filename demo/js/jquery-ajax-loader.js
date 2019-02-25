@@ -31,6 +31,9 @@ function preloadLinks() {
 	$("a").each(function () {
 		var href = $(this).attr("href");
 
+		if (href == window.location.pathname)
+			return;
+
 		ajaxLoadUrl(href, "", function (el, html) {
 			console.log("Preloaded: " + href);
 		});
@@ -69,6 +72,8 @@ $(document).ready(function () {
 		var href = $(this).attr("href");
 		var target = $(this).attr("target");
 
+		if ($(this).parents("form").length > 0)
+			return;
 
 		if (target != "_blank" && $(this).parents(".field").length == 0 && $(this).parents("#AccessCMSPermissionsPanel").length == 0) {
 

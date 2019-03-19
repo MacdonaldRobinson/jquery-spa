@@ -20,9 +20,9 @@
 
   <script>
     var ajaxOptions = {
-      homePagePath: "/home.html",
+      homePagePath: "home.html",
       targetElement: "#DynamicContent",
-      preloadLinks: true,
+      preloadLinks: false,
       animateIn: function (selector, html) {
         $(selector).each(function (index, el) {
           $(el).toggle("fade", 250, function () {

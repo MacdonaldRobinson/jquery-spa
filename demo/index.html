@@ -18,29 +18,12 @@
 
   <script src="js/jquery-ajax-loader.js"></script>
 
-  <script>
-    var ajaxOptions = {
-      homePagePath: "home.html",
-      targetElement: "#DynamicContent",
-      preloadLinks: false,
-      animateIn: function (selector, html) {
-        $(selector).each(function (index, el) {
-          $(el).toggle("fade", 250, function () {
-            $(el).html(html);
-            $(el).toggle("fade", 400);
-          });
-        });
-      }
-    }
-
-    initAjaxOptions(ajaxOptions);
-  </script>
-
-  <a href="home.html">Home</a>
   <a href="about.html">About</a>
   <a href="contact.html">Contact</a>
 
-  <div id="DynamicContent"></div>
+  <div id="DynamicContent">
+    Thsi is home page
+  </div>
 
 
 </body>

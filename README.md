@@ -3,11 +3,10 @@
 - Automaticly takes over anchor click events and makes anchor clicks load data via AJAX
 - Easy to create Vue or React like websites and page transitions.
 - Since data is simply loaded using AJAX you are inherently using SSR ( Server Side Rendering )
+- If the request is made directly to a URL it will be loaded via Server Side Rendering, making it SEO friendly
 - Uses the HTML5 History API internally so you can use the browsers back and forward buttons to navigate
 - Automaticly sends "pageview" events to google analytics when you navigate between different pages of your site
 - Ability to preload pages
-
-> NOTE: From the server side you need to redirect all traffic to the index page along with a hash of the path and query, so something like this: "/#/home?param1=test&param2=test2"
 
 ```html
 
@@ -19,10 +18,9 @@
   <!-- Load the library -->
   <script src="js/jquery-ajax-loader.js"></script>
 
-  <!-- Required: Initialize the ajax options -->
+  <!-- You dont need to even put the init script in as this is applied by default on load -->
   <script>
-    var ajaxOptions = {
-      homePagePath: "/home.html",
+    var ajaxOptions = {      
       targetElement: "#DynamicContent",    
       preloadLinks: true,
       animateIn: function (selector, html) {
@@ -42,8 +40,7 @@
   <a href="about.html">About</a>
   <a href="contact.html">Contact</a>
 
+  <!-- Required -->
   <div id="DynamicContent"></div>
-
-
 
 ```

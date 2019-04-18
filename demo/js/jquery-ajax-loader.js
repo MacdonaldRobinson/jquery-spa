@@ -127,11 +127,11 @@ function pushHistory(href, bodyHtml) {
 
 function _loadData(href, el, bodyHtml, callBackFunction) {
 
+	var dynamicContent = bodyHtml;
+
 	if ($("#DynamicContent").length > 0 && bodyHtml.indexOf("DynamicContent") != -1) {
 		var doc = $('<output>').append($.parseHTML(bodyHtml, document, true));
-		var dynamicContent = doc.find("#DynamicContent").html();
-
-		bodyHtml = dynamicContent;
+		dynamicContent = doc.find("#DynamicContent").html();
 	}
 
 
@@ -142,7 +142,7 @@ function _loadData(href, el, bodyHtml, callBackFunction) {
 		updateTitle(href, bodyHtml);
 		pushHistory(href, bodyHtml);
 
-		loadeData($(el), bodyHtml);
+		loadeData($(el), dynamicContent);
 	}
 
 	if (el != "") {

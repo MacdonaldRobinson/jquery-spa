@@ -43,6 +43,8 @@ function preloadLinks() {
 
 $(document).ready(function () {
 
+	trackPageView();
+
 	if (ajaxOptions.preloadLinks) {
 		preloadLinks();
 	}

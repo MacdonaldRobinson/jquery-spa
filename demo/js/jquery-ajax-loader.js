@@ -240,7 +240,9 @@ function ajaxLoadUrl(href, targetElement, callBackFunction) {
 		querySeperator = "&";
 	}
 
-	href = href + querySeperator + "homePagePath=" + ajaxOptions.homePagePath;
+	if (href.indexOf("homePagePath") == -1) {
+		href = href + querySeperator + "homePagePath=" + ajaxOptions.homePagePath;
+	}
 
 	var urlSegment = href.split("?")[0];
 

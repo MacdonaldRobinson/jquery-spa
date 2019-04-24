@@ -49,12 +49,12 @@
 
     initAjaxOptions(ajaxOptions);
   </script>
-
-  <a href="home.html">Home</a>
+  
   <a href="about.html">About</a>
   <a href="contact.html">Contact</a>
 
-  <!-- Required -->
-  <div id="DynamicContent"></div>
+  <div id="DynamicContent">
+    Thsi is home page
+  </div>
 
 ```

@@ -1,6 +1,8 @@
 var ajaxOptions = {
 	targetElement: "#DynamicContent",
+	omitElementSelector: ".not-ajax",
 	preloadLinks: false,
+	onLoad: function () { },
 	animateIn: function (selector, html) {
 		$(selector).each(function (index, el) {
 			//$(el).html(html);
@@ -10,6 +12,8 @@ var ajaxOptions = {
 				//$(el).css("height", "100%");
 				// $("#mainNav").effect("fade");
 				$(el).toggle("fade", 400);
+
+				$(el).click();
 				//$("body").scrollTop(0);
 			});
 		});
@@ -71,26 +75,26 @@ $(document).ready(function () {
 		}
 	};
 
-	$(document).on("click", "a:not(.not-ajax)", function (event) {
+	$(document).on("click", "a:not(" + ajaxOptions.omitElementSelector + ")", function (event) {
+
+		if ($(this).closest(ajaxOptions.omitElementSelector).length > 0)
+			return;
 
 		var href = $(this).attr("href");
 		var target = $(this).attr("target");
 
-		if ($(this).parents("form").length > 0)
-			return;
-
-		if (target != "_blank" && !$(this).hasClass("edit") && $(this).parents("#AccessCMSPermissionsPanel").length == 0) {
+		if (href != undefined && target != "_blank" && !$(this).hasClass("edit") && href.indexOf("javascript:") == -1 && $(this).parents("#AccessCMSPermissionsPanel").length == 0 && href.charAt(0) != "#") {
 
 			var urlSegment = href.split("?")[0];
 			var segment = href.replace(window.location.origin, "");
 
 			if (segment != "") {
 
-				var loaded = ajaxLoadUrl(href, "#DynamicContent");
+				var loaded = ajaxLoadUrl(href, ajaxOptions.targetElement);
 
-				//console.log(loaded, href, segment, window.location.pathname);				
+				//console.log(loaded, href, segment, window.location.pathname);			
 
-				if (loaded || (segment == window.location.pathname || (segment == href && segment.indexOf("mailto") == -1 && segment.indexOf("tel") == -1))) {
+				if (loaded || (segment == window.location.pathname || (segment == href && segment.indexOf("mailto:") == -1 && segment.indexOf("tel:") == -1))) {
 					event.preventDefault();
 				}
 			}
@@ -101,7 +105,7 @@ $(document).ready(function () {
 var lastTargetElement = null;
 
 function updateTitle(href, bodyHtml) {
-	var doc = $('<output>').append($.parseHTML(bodyHtml, document, true));
+	var doc = $('<output>').append($.parseHTML(bodyHtml, document, false));
 	document.title = doc.find("title").text();
 
 	doc.find("meta").each(function (index, el) {
@@ -129,9 +133,12 @@ function _loadData(href, el, bodyHtml, callBackFunction) {
 
 	var dynamicContent = bodyHtml;
 
-	if ($("#DynamicContent").length > 0 && bodyHtml.indexOf("DynamicContent") != -1) {
+	var targetSelector = ajaxOptions.targetElement;
+	var targetName = ajaxOptions.targetElement.replace("#", "");
+
+	if ($(targetSelector).length > 0 && bodyHtml.indexOf(targetName) != -1) {
 		var doc = $('<output>').append($.parseHTML(bodyHtml, document, true));
-		dynamicContent = doc.find("#DynamicContent").html();
+		dynamicContent = doc.find(targetSelector).html();
 	}
 
 
@@ -140,10 +147,16 @@ function _loadData(href, el, bodyHtml, callBackFunction) {
 	}
 	else {
 		updateTitle(href, bodyHtml);
-		pushHistory(href, bodyHtml);
+		pushHistory(href, dynamicContent);
 
 		loadeData($(el), dynamicContent);
 	}
+
+
+	setTimeout(function () {
+		ajaxOptions.onLoad(bodyHtml);
+	}, 500)
+
 
 	if (el != "") {
 		trackPageView();
@@ -153,8 +166,8 @@ function _loadData(href, el, bodyHtml, callBackFunction) {
 }
 
 function trackPageView() {
-	setTimeout(function () {
 
+	setTimeout(function () {
 
 		if (typeof ga == 'undefined') {
 			console.log("Google Analytics Not installed! No PageViews will be tracked!");
@@ -163,43 +176,45 @@ function trackPageView() {
 
 		var trackingId = "";
 
-		ga.getAll().forEach(function (tracker) {
-			trackingId = tracker.get("trackingId");
+		ga(function () {
+			ga.getAll().forEach(function (tracker) {
+				trackingId = tracker.get("trackingId");
+			});
+			if (trackingId == "") {
+				console.log("Error: Unable to get Google Analytics Tracking ID");
+				return;
+			}
+
+			console.log("Found Google Analytics Tracking ID ( " + trackingId + " )!");
+
+			if (typeof gtag != 'undefined') {
+
+				console.log("Found gtag");
+
+				gtag('config', trackingId, {
+					'page_title': document.title,
+					'page_path': document.location.pathname
+				});
+
+				console.log("Sent PageView for - " + document.location.pathname);
+
+			}
+			else if (typeof ga != 'undefined') {
+				console.log("No 'gtag' found, falling back to 'ga'");
+
+				ga('create', trackingId, 'auto');
+				ga('set', 'page', location.pathname);
+				ga('send', 'pageview');
+
+				//ga('send', 'pageview', location.pathname);
+
+				console.log("Sent PageView for - " + document.location.pathname);
+			}
+			else {
+				console.log("Error tracking no ga or gtag were found, No PageViews will be tracked!");
+			}
 		});
 
-		if (trackingId == "") {
-			console.log("Error: Unable to get Google Analytics Tracking ID");
-			return;
-		}
-
-		console.log("Found Google Analytics Tracking ID ( " + trackingId + " )!");
-
-		if (typeof gtag != 'undefined') {
-
-			console.log("Found gtag");
-
-			gtag('config', trackingId, {
-				'page_title': document.title,
-				'page_path': document.location.pathname
-			});
-
-			console.log("Sent PageView for - " + document.location.pathname);
-
-		}
-		else if (typeof ga != 'undefined') {
-			console.log("No 'gtag' found, falling back to 'ga'");
-
-			ga('create', trackingId, 'auto');
-			ga('set', 'page', location.pathname);
-			ga('send', 'pageview');
-
-			//ga('send', 'pageview', location.pathname);
-
-			console.log("Sent PageView for - " + document.location.pathname);
-		}
-		else {
-			console.log("Error tracking no ga or gtag were found, No PageViews will be tracked!");
-		}
 	}, 1000);
 }
 
@@ -209,7 +224,6 @@ var cache = [];
 var timer = null;
 
 function block() {
-	console.log("Ran block");
 	timer = setTimeout(function () {
 		$.blockUI({
 			message: '<div class="lds-ring"><div></div><div></div><div></div><div></div></div>',

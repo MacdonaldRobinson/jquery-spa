@@ -156,14 +156,11 @@ function _loadData(href, el, bodyHtml, callBackFunction, addToHistory) {
 		if (callBackFunction != undefined && callBackFunction != "" && callBackFunction != null) {
 			callBackFunction($(el), bodyHtml);
 		}
-		else {
-			updateTitle(href, bodyHtml);
 
-			if (addToHistory) {
-				pushHistory(href, dynamicContent);
-			}
+		updateTitle(href, bodyHtml);
 
-			//loadeData($(el), dynamicContent);
+		if (addToHistory) {
+			pushHistory(href, dynamicContent);
 		}
 
 

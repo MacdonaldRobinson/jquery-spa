@@ -150,7 +150,10 @@ function _loadData(href, el, bodyHtml, callBackFunction, addToHistory) {
 			}
 		});
 
+		ajaxOptions.onLoad(bodyHtml);
+
 		ajaxOptions.animateIn(el);
+
 		$(window).scrollTop(0);
 
 		if (callBackFunction != undefined && callBackFunction != "" && callBackFunction != null) {
@@ -162,12 +165,6 @@ function _loadData(href, el, bodyHtml, callBackFunction, addToHistory) {
 		if (addToHistory) {
 			pushHistory(href, dynamicContent);
 		}
-
-
-		setTimeout(function () {
-			ajaxOptions.onLoad(bodyHtml);
-		}, 500)
-
 
 		if (el != "") {
 			trackPageView();

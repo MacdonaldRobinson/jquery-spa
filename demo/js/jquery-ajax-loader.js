@@ -1,9 +1,9 @@
 var ajaxOptions = {
 	targetElement: "#DynamicContent",
-	omitElementSelector:".not-ajax",
+	omitElementSelector: ".not-ajax",
 	preloadLinks: false,
 	onLoad: function () { },
-	block: function () {		
+	block: function () {
 		$.blockUI({ message: "Loading ..." });
 		console.log("Ran block")
 	},
@@ -11,7 +11,7 @@ var ajaxOptions = {
 		$.unblockUI();
 		console.log("Ran unblockUI")
 	},
-	animateOut: function(el) {
+	animateOut: function (el) {
 		$(el).fadeOut();
 		console.log("Ran animateOut");
 	},
@@ -23,13 +23,6 @@ var ajaxOptions = {
 
 function initAjaxOptions(options) {
 	ajaxOptions = options;
-}
-
-function loadeData(selector, html) {
-	$(".nav-link").parent().removeClass("current");
-	$(".searchList").val("");
-
-	ajaxOptions.animateIn(selector, html);
 }
 
 function preloadLinks() {
@@ -64,12 +57,10 @@ $(document).ready(function () {
 
 	window.onpopstate = function (event) {
 
-
 		if (event.state != null) {
+			console.log("Ran window.onpopstate");
 
-			loadeData(lastTargetElement, event.state.html);
-			updateTitle(event.state.href, event.state.html);
-
+			_loadData(event.state.href, lastTargetElement, event.state.html, function () { }, false);
 			/*ajaxLoadUrl(event.state.href, lastTargetElement, function (el, bodyHtml) {				
 				event.state.html = bodyHtml;
 			});*/
@@ -79,7 +70,7 @@ $(document).ready(function () {
 	$(document).on("click", "a:not(" + ajaxOptions.omitElementSelector + ")", function (event) {
 
 		if ($(this).closest(ajaxOptions.omitElementSelector).length > 0)
-			return;		
+			return;
 
 		var href = $(this).attr("href");
 		var target = $(this).attr("target");
@@ -91,9 +82,9 @@ $(document).ready(function () {
 
 			if (segment != "") {
 
-				var loaded = ajaxLoadUrl(href, ajaxOptions.targetElement);					
+				var loaded = ajaxLoadUrl(href, ajaxOptions.targetElement);
 
-				if (loaded || (segment == window.location.pathname || (segment == href && segment.indexOf("mailto:") == -1 && segment.indexOf("tel:") == -1 ))) {					
+				if (loaded || (segment == window.location.pathname || (segment == href && segment.indexOf("mailto:") == -1 && segment.indexOf("tel:") == -1))) {
 					event.preventDefault();
 				}
 			}
@@ -128,13 +119,15 @@ function pushHistory(href, bodyHtml) {
 }
 
 
-function _loadData(href, el, bodyHtml, callBackFunction) {
+function _loadData(href, el, bodyHtml, callBackFunction, addToHistory) {
+
+	if (addToHistory == undefined)
+		addToHistory = true;
 
 	var dynamicContent = bodyHtml;
 
 	var targetSelector = ajaxOptions.targetElement;
-	var targetName = ajaxOptions.targetElement.replace("#", "");	
-
+	var targetName = ajaxOptions.targetElement.replace("#", "");
 
 	if ($(targetSelector).length > 0 && bodyHtml.indexOf(targetName) != -1) {
 		ajaxOptions.animateOut(el);
@@ -146,42 +139,45 @@ function _loadData(href, el, bodyHtml, callBackFunction) {
 
 		foundElements.each(function () {
 			var id = $(this).attr("id");
-			
+
 			var currentElem = $("#" + id);
 
 			var currentElemHtml = currentElem.html();
 			var newHtml = $(this).html();
 
 			if (currentElemHtml != newHtml) {
-				currentElem.replaceWith(this);		
+				currentElem.replaceWith(this);
 			}
 		});
+
 		ajaxOptions.animateIn(el);
+		$(window).scrollTop(0);
+
+		if (callBackFunction != undefined && callBackFunction != "" && callBackFunction != null) {
+			callBackFunction($(el), bodyHtml);
+		}
+		else {
+			updateTitle(href, bodyHtml);
+
+			if (addToHistory) {
+				pushHistory(href, dynamicContent);
+			}
+
+			//loadeData($(el), dynamicContent);
+		}
+
+
+		setTimeout(function () {
+			ajaxOptions.onLoad(bodyHtml);
+		}, 500)
+
+
+		if (el != "") {
+			trackPageView();
+			//preloadLinks();
+		}
 	}
 
-
-
-	if (callBackFunction != undefined && callBackFunction != "" && callBackFunction != null) {
-		callBackFunction($(el), bodyHtml);
-	}
-	else {
-		updateTitle(href, bodyHtml);
-		pushHistory(href, dynamicContent);
-
-		//loadeData($(el), dynamicContent);
-	}
-	
-
-	setTimeout(function () {
-		ajaxOptions.onLoad(bodyHtml);
-	}, 500)
-
-
-	if (el != "") {
-		trackPageView();
-
-		//preloadLinks();
-	}
 }
 
 function trackPageView() {
@@ -198,7 +194,7 @@ function trackPageView() {
 		ga(function () {
 			ga.getAll().forEach(function (tracker) {
 				trackingId = tracker.get("trackingId");
-			});			
+			});
 			if (trackingId == "") {
 				console.log("Error: Unable to get Google Analytics Tracking ID");
 				return;

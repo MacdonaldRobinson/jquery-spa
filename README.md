@@ -7,8 +7,11 @@
 - Automaticly sends "pageview" events to google analytics when you navigate between different pages of your site
 - Makes it easy to fetch html via a url and inject it into an element, use the built in function "ajaxLoadUrl" as seen below
 ```javascript
-ajaxLoadUrl(url, "#DynamiContent"); // Directly update the selector with the contents returned after the page is loaded via AJAX
-    OR
+// Directly update the selector with the contents returned after the page is loaded via AJAX
+ajaxLoadUrl(url, "#DynamiContent"); 
+
+OR
+
 ajaxLoadUrl(href, "", function (el, html) { 
 	// Callback method after the URL was loaded via AJAX
 	console.log("Loaded Url: " + href);
@@ -38,28 +41,34 @@ var ajaxOptions = {
 	omitElementSelector:".not-ajax", // This tells the script to not hijack click events on elements that match this selector
 	preloadLinks: false,
 	onLoad: function () { 
-		// Instead of executing your pages code in document.ready directly, create an init function and then call it from document.ready
-		// Call the same function here, this ensures that scripts that execute in document.ready are re-executed
+	// Instead of executing your pages code in document.ready directly, create an init function and then call it from document.ready
+	// Call the same function here, this ensures that scripts that execute in document.ready are re-executed
 	},
 	block: function () {		
-		// This function is used to show a preloader during the ajax process and before the elements are replaced with updated content
+	// This function is used to show a preloader during the ajax process and before the elements are replaced with updated content
 	$.blockUI({ message: "Loading ..." });
 	console.log("Ran block")
 	},
 	unBlock: function () {
-		// This function is used to hide the preloader after the element is replaced with new content
+	
+	// This function is used to hide the preloader after the element is replaced with new content
 	$.unblockUI();
-		console.log("Ran unblockUI")
+	console.log("Ran unblockUI")
+	
 	},      
 	animateOut: function(el) {
-		// This function is used to animate the element OUT before it is replaced with new content
+	
+	// This function is used to animate the element OUT before it is replaced with new content
 	$(el).fadeOut();
-		console.log("Ran animateOut");
+	console.log("Ran animateOut");
+	
 	},
 	animateIn: function (el) {
-		// This function is used to animate the element IN after it is replaced with new content
-		$(el).fadeIn();
-		console.log("Ran animateIn");
+	
+	// This function is used to animate the element IN after it is replaced with new content
+	$(el).fadeIn();
+	console.log("Ran animateIn");
+	
 	}
 }
 

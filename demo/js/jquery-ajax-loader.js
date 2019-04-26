@@ -1,22 +1,23 @@
 var ajaxOptions = {
 	targetElement: "#DynamicContent",
-	omitElementSelector: ".not-ajax",
+	omitElementSelector:".not-ajax",
 	preloadLinks: false,
 	onLoad: function () { },
-	animateIn: function (selector, html) {
-		$(selector).each(function (index, el) {
-			//$(el).html(html);
-
-			$(el).toggle("fade", 250, function () {
-				$(el).html(html);
-				//$(el).css("height", "100%");
-				// $("#mainNav").effect("fade");
-				$(el).toggle("fade", 400);
-
-				$(el).click();
-				//$("body").scrollTop(0);
-			});
-		});
+	block: function () {		
+		$.blockUI({ message: "Loading ..." });
+		console.log("Ran block")
+	},
+	unBlock: function () {
+		$.unblockUI();
+		console.log("Ran unblockUI")
+	},
+	animateOut: function(el) {
+		$(el).fadeOut();
+		console.log("Ran animateOut");
+	},
+	animateIn: function (el) {
+		$(el).fadeIn();
+		console.log("Ran animateIn");
 	}
 }
 
@@ -78,7 +79,7 @@ $(document).ready(function () {
 	$(document).on("click", "a:not(" + ajaxOptions.omitElementSelector + ")", function (event) {
 
 		if ($(this).closest(ajaxOptions.omitElementSelector).length > 0)
-			return;
+			return;		
 
 		var href = $(this).attr("href");
 		var target = $(this).attr("target");
@@ -90,11 +91,9 @@ $(document).ready(function () {
 
 			if (segment != "") {
 
-				var loaded = ajaxLoadUrl(href, ajaxOptions.targetElement);
+				var loaded = ajaxLoadUrl(href, ajaxOptions.targetElement);					
 
-				//console.log(loaded, href, segment, window.location.pathname);			
-
-				if (loaded || (segment == window.location.pathname || (segment == href && segment.indexOf("mailto:") == -1 && segment.indexOf("tel:") == -1))) {
+				if (loaded || (segment == window.location.pathname || (segment == href && segment.indexOf("mailto:") == -1 && segment.indexOf("tel:") == -1 ))) {					
 					event.preventDefault();
 				}
 			}
@@ -105,7 +104,7 @@ $(document).ready(function () {
 var lastTargetElement = null;
 
 function updateTitle(href, bodyHtml) {
-	var doc = $('<output>').append($.parseHTML(bodyHtml, document, false));
+	var doc = $('<output>').append($.parseHTML(bodyHtml, document, true));
 	document.title = doc.find("title").text();
 
 	doc.find("meta").each(function (index, el) {
@@ -134,12 +133,32 @@ function _loadData(href, el, bodyHtml, callBackFunction) {
 	var dynamicContent = bodyHtml;
 
 	var targetSelector = ajaxOptions.targetElement;
-	var targetName = ajaxOptions.targetElement.replace("#", "");
+	var targetName = ajaxOptions.targetElement.replace("#", "");	
+
 
 	if ($(targetSelector).length > 0 && bodyHtml.indexOf(targetName) != -1) {
+		ajaxOptions.animateOut(el);
+
 		var doc = $('<output>').append($.parseHTML(bodyHtml, document, true));
-		dynamicContent = doc.find(targetSelector).html();
+		//dynamicContent = doc.find(targetSelector).html();		
+
+		var foundElements = doc.find(targetSelector);
+
+		foundElements.each(function () {
+			var id = $(this).attr("id");
+			
+			var currentElem = $("#" + id);
+
+			var currentElemHtml = currentElem.html();
+			var newHtml = $(this).html();
+
+			if (currentElemHtml != newHtml) {
+				currentElem.replaceWith(this);		
+			}
+		});
+		ajaxOptions.animateIn(el);
 	}
+
 
 
 	if (callBackFunction != undefined && callBackFunction != "" && callBackFunction != null) {
@@ -149,9 +168,9 @@ function _loadData(href, el, bodyHtml, callBackFunction) {
 		updateTitle(href, bodyHtml);
 		pushHistory(href, dynamicContent);
 
-		loadeData($(el), dynamicContent);
+		//loadeData($(el), dynamicContent);
 	}
-
+	
 
 	setTimeout(function () {
 		ajaxOptions.onLoad(bodyHtml);
@@ -179,7 +198,7 @@ function trackPageView() {
 		ga(function () {
 			ga.getAll().forEach(function (tracker) {
 				trackingId = tracker.get("trackingId");
-			});
+			});			
 			if (trackingId == "") {
 				console.log("Error: Unable to get Google Analytics Tracking ID");
 				return;
@@ -221,35 +240,12 @@ function trackPageView() {
 var isLoading = false;
 var cache = [];
 
-var timer = null;
-
-function block() {
-	timer = setTimeout(function () {
-		$.blockUI({
-			message: '<div class="lds-ring"><div></div><div></div><div></div><div></div></div>',
-			css: {
-				border: 'none',
-				background: 'none'
-			}
-		});
-	}, 500);
-}
-
 function stopRequests() {
 	console.log("Ran stopRequests");
 
 	ajaxRequests.forEach(function (request) {
 		request.abort();
 	})
-}
-
-function unBlock() {
-	console.log("Ran unBlock");
-
-	$.unblockUI();
-	if (timer != null) {
-		clearTimeout(timer);
-	}
 }
 
 function convertHrefToPath(href) {
@@ -295,8 +291,7 @@ function ajaxLoadUrl(href, targetElement, callBackFunction) {
 		else {
 
 			if (targetElement != "") {
-				//stopRequests();
-				block();
+				ajaxOptions.block();
 			}
 
 			var ajaxRequest = $.get(href, function (data) {
@@ -310,7 +305,7 @@ function ajaxLoadUrl(href, targetElement, callBackFunction) {
 				_loadData(href, el, bodyHtml, callBackFunction);
 
 				if (targetElement != "") {
-					unBlock();
+					ajaxOptions.unBlock();
 				}
 
 			});

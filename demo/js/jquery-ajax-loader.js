@@ -150,10 +150,6 @@ function _loadData(href, el, bodyHtml, callBackFunction, addToHistory) {
 			}
 		});
 
-		ajaxOptions.onLoad(bodyHtml);
-
-		ajaxOptions.animateIn(el);
-
 		$(window).scrollTop(0);
 
 		if (callBackFunction != undefined && callBackFunction != "" && callBackFunction != null) {
@@ -170,6 +166,9 @@ function _loadData(href, el, bodyHtml, callBackFunction, addToHistory) {
 			trackPageView();
 			//preloadLinks();
 		}
+
+		ajaxOptions.onLoad(bodyHtml);
+		ajaxOptions.animateIn(el);
 	}
 
 }

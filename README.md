@@ -1,4 +1,4 @@
-# jquery-ajax-loader
+# jquery-spa
 - Automaticly takes over anchor click events and makes anchor clicks load data via AJAX
 - Easy to create Vue or React like websites and page transitions.
 - Since data is simply loaded using AJAX you are inherently using SSR ( Server Side Rendering )

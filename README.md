@@ -32,7 +32,7 @@ ajaxLoadUrl(href, "", function (el, html) {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.min.js"></script>
 
 <!-- Required: Load the library -->
-<script src="js/jquery-ajax-loader.js"></script>
+<script src="js/jquery-spa.js"></script>
 
 <!-- You dont need to even put the init script in as this is applied by default on load -->
 <script>

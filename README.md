@@ -8,9 +8,9 @@
 - Makes it easy to fetch html via a url and inject it into an element, use the built in function "ajaxLoadUrl" as seen below
 
 ## Demo Site ##
-- **URL:**: https://macdonaldrobinson.github.io/jquery-spa/
+- **URL:**: http://flexdotnetcms.somee.com
 - **Username:** test_dev
-- **Password:** test_password   
+- **Password:** test_password
 
 ```javascript
 // Directly update the selector with the contents returned after the page is loaded via AJAX

@@ -6,6 +6,12 @@
 - Uses the HTML5 History API internally so you can use the browsers back and forward buttons to navigate
 - Automaticly sends "pageview" events to google analytics when you navigate between different pages of your site
 - Makes it easy to fetch html via a url and inject it into an element, use the built in function "ajaxLoadUrl" as seen below
+
+## Demo Site ##
+- **URL:**: http://flexdotnetcms.somee.com
+- **Username:** test_dev
+- **Password:** test_password
+
 ```javascript
 // Directly update the selector with the contents returned after the page is loaded via AJAX
 ajaxLoadUrl(url, "#DynamiContent"); 
@@ -17,8 +23,6 @@ ajaxLoadUrl(href, "", function (el, html) {
 	console.log("Loaded Url: " + href);
 });
 ```
-
-Working demo: https://macdonaldrobinson.github.io/jquery-spa/
 
 **All you need to do is include the library on every page and just surround the content that needs to be updated between pages with the "targetElement" by default it is an element with the id "DynamicContent"**
 

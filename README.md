@@ -6,11 +6,10 @@
 - Uses the HTML5 History API internally so you can use the browsers back and forward buttons to navigate
 - Automaticly sends "pageview" events to google analytics when you navigate between different pages of your site
 - Makes it easy to fetch html via a url and inject it into an element, use the built in function "ajaxLoadUrl" as seen below
+- Comes bundled with the FlexDotNet CMS that I built: https://github.com/MacdonaldRobinson/FlexDotnetCMS
 
 ## Demo Site ##
 - **URL:**: http://flexdotnetcms.somee.com
-- **Username:** test_dev
-- **Password:** test_password
 
 ```javascript
 // Directly update the selector with the contents returned after the page is loaded via AJAX

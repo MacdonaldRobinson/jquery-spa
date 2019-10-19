@@ -18,7 +18,11 @@ ajaxLoadUrl(href, "", function (el, html) {
 });
 ```
 
-Working demo: https://macdonaldrobinson.github.io/jquery-spa/
+Demo Site
+
+    URL:: https://macdonaldrobinson.github.io/jquery-spa/
+    Username: test_dev
+    Password: test_password
 
 **All you need to do is include the library on every page and just surround the content that needs to be updated between pages with the "targetElement" by default it is an element with the id "DynamicContent"**
 

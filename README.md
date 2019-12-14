@@ -87,7 +87,7 @@ initAjaxOptions(ajaxOptions);
 <a href="contact.html">Contact</a>
 
 <div id="DynamicContent">
-	This is home page
+	This is the home page
 </div>
 
 ```
